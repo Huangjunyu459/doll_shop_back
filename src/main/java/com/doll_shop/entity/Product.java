@@ -15,7 +15,8 @@ public class Product {
     private Long id;
 
     private String name;
-    private String image;
+    @TableField(typeHandler = JacksonTypeHandler.class)
+    private List<String> image;
 
     @TableField(typeHandler = JacksonTypeHandler.class)
     private List<String> category;
@@ -34,4 +35,8 @@ public class Product {
 
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updatedAt;
+
+    @TableLogic  // 核心注解：标记该字段为逻辑删除字段
+    @TableField(value = "is_deleted", fill = FieldFill.INSERT) // 插入时自动填充 0
+    private Integer isDeleted;
 }
