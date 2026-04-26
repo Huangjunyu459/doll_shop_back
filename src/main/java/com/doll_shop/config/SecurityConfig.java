@@ -30,6 +30,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/login", "/api/auth/register", "/api/upload/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll() // 仅允许匿名 GET 请求查询商品
+                        .requestMatchers(HttpMethod.POST, "/api/products/*/like").permitAll() // 允许任何人点赞
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

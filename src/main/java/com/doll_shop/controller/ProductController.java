@@ -101,4 +101,35 @@ public class ProductController {
         boolean success = productService.removeById(id);
         return success ? R.ok(null) : R.error("删除失败");
     }
+
+    /**
+     * 获取商品详情接口（附带自动增加浏览量 PV）
+     * 允许前端免登录调用
+     */
+    @GetMapping("/{id}")
+    public R<Product> getById(@PathVariable Long id) {
+        // 1. 调用我们在 Service 里写好的原子增加方法
+        productService.addViewCount(id);
+
+        // 2. 返回最新的商品数据给前端（此时查出来的数据已经是 PV +1 后的了）
+        return R.ok(productService.getById(id));
+    }
+
+    /**
+     * 想要（点赞）接口 - 免登录版
+     */
+    @PostMapping("/{id}/like")
+    // 通过 @RequestHeader 获取前端传来的自定义头 X-Guest-ID
+    public R<Void> like(@PathVariable Long id,
+                        @RequestHeader(value = "X-Guest-ID", required = false) String guestId) {
+
+        // 防御性编程：如果前端没传，给个提示
+        if (guestId == null || guestId.trim().isEmpty()) {
+            return R.error("缺失设备标识，操作失败");
+        }
+
+        productService.addLike(id, guestId);
+        return R.ok(null);
+    }
+
 }

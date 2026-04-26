@@ -11,5 +11,7 @@ public record ProductQueryRequest(
         List<String> ips,        // 勾选的多个IP，如 ["迪士尼", "万代"]
         List<String> statuses,   // 勾选的多个状态，如 ["售卖中", "打折"]
         Integer pageNum,         // 当前页码
-        Integer pageSize         // 每页条数
-) {}
+        Integer pageSize,        // 每页条数
+        String sortType // new: 最新, hot: 最热
+) {
+}
