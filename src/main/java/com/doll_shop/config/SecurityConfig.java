@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/login", "/api/auth/register", "/api/upload/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/products").permitAll() // 仅允许匿名 GET 请求查询商品
+                        .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll() // 仅允许匿名 GET 请求查询商品
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
